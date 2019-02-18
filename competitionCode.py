@@ -25,12 +25,18 @@ try:
     csv_file = open(latestFile)
     csv_reader = csv.DictReader(csv_file)
     teams = {}
+    r = 0
     for row in csv_reader:
         teamNum = (row["Team Number"])
         if (teamNum not in teams.keys()):
             teams[row["Team Number"]] = workbook.add_worksheet(row["Team Number"])
+            r = 0
         for c, col in enumerate(row):
-            teams[row["Team Number"]].write(1, c, col)
+            teams[row["Team Number"]].write(0, c, col)
+        for ci in row.keys():
+            for c, col in enumerate(row.items()):                
+                teams[row["Team Number"]].write(r+1, c, col[1])
+        r+=1
 finally:
     csv_file.close()
     
