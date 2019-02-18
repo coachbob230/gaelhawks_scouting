@@ -47,7 +47,7 @@ try:
     # for each team, create a sheet and populate
     cellfmt = workbook.add_format()
     cellfmt.set_text_wrap()
-    cellfmt.set_center_across()
+    cellfmt.set_align('center')
     #cellfmt.   ## cell height and width
     for row in csv_reader:
         teamNum = (row["Team Number"])
