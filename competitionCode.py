@@ -1,7 +1,6 @@
 from xlsxwriter.utility import xl_rowcol_to_cell as getCell
 import xlsxwriter as write
 import csv
-import statistics
 import datetime
 import glob
 import os
@@ -46,6 +45,10 @@ try:
     r = 1
 
     # for each team, create a sheet and populate
+    cellfmt = workbook.add_format()
+    cellfmt.set_text_wrap()
+    cellfmt.set_center_across()
+    #cellfmt.   ## cell height and width
     for row in csv_reader:
         teamNum = (row["Team Number"])
         # when we find a new team number create a new sheet
@@ -70,10 +73,12 @@ try:
                 continue
             if re.match('Team Number',k): 
                 continue
+            if type(k) is str: k = re.sub('["]', '', k)
+            if type(v) is str: v = re.sub('["]', '', v)
             # Add header in top row
-            teams[row["Team Number"]].write(0, col, k)
+            teams[row["Team Number"]].write(0, col, k, cellfmt)
             # Add values to rows
-            teams[row["Team Number"]].write(r, col, v)
+            teams[row["Team Number"]].write(r, col, v, cellfmt)
             col=col+1
         r+=1
 
