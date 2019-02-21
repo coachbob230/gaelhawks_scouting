@@ -32,6 +32,47 @@ timestamp = str(date) + "_" + timestamp
 excelFile = re.sub(r'RawExport-.+$',timestamp,latestFileName) + ".xlsx"
 print(excelFile)
 
+columnOrder={
+    # Column Name:           Col Num
+    "Team Number":                   0,
+    "Match Number":   	            11,
+    "SANDSTORM":                    20,
+    "Starting Level":               21,
+    "Start With Hatch or Cargo?":   22,
+    "Leave Hab?":                   23,
+    "Cargo Placed":                 24,
+    "Hatch Panels Placed":          25,
+    "TELE-OP":                      30,
+    "Hatch on Cargo Ship":          31,
+    "Hatch on Rocket LOW":          32,
+    "Hatch on Rocket MID":          33,
+    "Hatch on Rocket TOP":          34,
+    "Cargo in Cargo Ship":          35,
+    "Cargo in Rocket LOW":          36,
+    "Cargo on Rocket MID":          37,
+    "Cargo on Rocket TOP":          38,
+    "END GAME":                     40,
+    "End Hab Level":                41,
+    "Did They Get Lifted?":         42,
+    "Did They Lift Another Robot?": 43,
+    "Comments":                     50,
+    "Match Comment":                51
+}
+
+
+def getOrder(key):
+    try:
+        k=key[0].lstrip()
+        columnOrder[k]
+    except Exception:
+        return 999
+    else:
+        print(columnOrder[k])
+        return columnOrder[k]
+
+
+
+
 workbook = write.Workbook('C:\\Users\\Jules\\Desktop\\' + excelFile, {'strings_to_numbers':True})
 contents = workbook.add_worksheet("Teams")
 averages = workbook.add_worksheet("Avg")
@@ -67,7 +108,7 @@ try:
             r = 1
 
         col=0
-        for c, (k, v) in enumerate(row.items()):
+        for c, (k, v) in enumerate(sorted(row.items(), key=getOrder)):
             # if the key starts with a space, ignore it, it is a header
             if re.match('^ ',k): 
                 continue
@@ -88,12 +129,12 @@ except Exception as ee:
 finally:
     csv_file.close()
     
+# add all the raw datat to a sheet.
 with open (latestFile) as csv_file:
     rawData = workbook.add_worksheet("Raw Data")
     reader = csv.reader(csv_file)
     for r, rows in enumerate(reader):
         for c, col in enumerate(rows):
             rawData.write(r, c, col)
-
 
 workbook.close()
