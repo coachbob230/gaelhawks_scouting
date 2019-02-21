@@ -32,6 +32,12 @@ timestamp = str(date) + "_" + timestamp
 excelFile = re.sub(r'RawExport-.+$',timestamp,latestFileName) + ".xlsx"
 print(excelFile)
 
+# Get event name from the file name
+(_,event,_)=latestFileName.split(r'_',2)
+event=re.sub(r' Event','',event)
+print("Event: " + event)
+
+# Specify the order that the columns should be in in the speadsheet
 columnOrder={
     # Column Name:           Col Num
     "Team Number":                   0,
@@ -67,7 +73,6 @@ def getOrder(key):
     except Exception:
         return 999
     else:
-        print(columnOrder[k])
         return columnOrder[k]
 
 
