@@ -10,6 +10,7 @@ import re
 
 def calculate(sheet,lastrow):
     """Add all the calculated values to the sheet"""
+
     r=lastrow+1
     avgFormat = workbook.add_format()
     avgFormat.set_bold()
@@ -18,6 +19,38 @@ def calculate(sheet,lastrow):
     for x in range (2, col-1):
         formulaAvg = '=IF(TYPE(' + getCell(1, x) + ')=1,AVERAGE(' + getCell(1, x) + ':' + getCell(r-1, x) + '), "")'
         sheet.write(r, x, formulaAvg, avgFormat)
+
+    # next line of calculations    
+    r = r + 1
+    #sheet.write(r, 2, "Total Items:")
+    #sheet.write(r, 3, "=SUM()")
+
+
+
+def predicterPage(sheet):
+    """ Create the predicter page """
+    pass
+
+
+
+def teamPage(sheet,teamNum):
+    """ Create the team page """
+
+    # TODO: get data from TBA
+    pass
+
+
+
+def getTBATeamData(teamNum):
+    """ Get The Blue Alliance team data iff we have an internet connection
+    Store the data in a file so that we can use it later and add it to the team sheets"""
+    pass
+
+
+
+def readTBATeamData(teamNum):
+    """ Read the team data from the file and put it in the team's tab """
+    pass
 
 
 
@@ -112,7 +145,8 @@ try:
             teams[row["Team Number"]] = workbook.add_worksheet(row["Team Number"])
             r = 1
 
-        col=0
+        col=1
+        teams[row["Team Number"]].write(0, 0, "Event", cellfmt)
         for c, (k, v) in enumerate(sorted(row.items(), key=getOrder)):
             # if the key starts with a space, ignore it, it is a header
             if re.match('^ ',k): 
@@ -124,6 +158,7 @@ try:
             # Add header in top row
             teams[row["Team Number"]].write(0, col, k, cellfmt)
             # Add values to rows
+            teams[row["Team Number"]].write(r, 0, event, cellfmt)
             teams[row["Team Number"]].write(r, col, v, cellfmt)
             col=col+1
         r+=1
