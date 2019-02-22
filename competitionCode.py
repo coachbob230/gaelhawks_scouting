@@ -68,7 +68,7 @@ print(excelFile)
 # Get event name from the file name
 (_,event,_)=latestFileName.split(r'_',2)
 event=re.sub(r' Event','',event)
-print("Event: " + event)
+#print("Event: " + event)
 
 # Specify the order that the columns should be in in the speadsheet
 columnOrder={
@@ -100,6 +100,8 @@ columnOrder={
 
 
 def getOrder(key):
+    """ return the value which puts the columns in the correct order """
+
     try:
         k=key[0].lstrip()
         columnOrder[k]
