@@ -9,7 +9,7 @@ import re
 
 
 def calculate(sheet,lastrow):
-    """Add all the calculated values to the sheet"""
+    """ Add all the calculated values to the sheet """
 
     r=lastrow+1
     avgFormat = workbook.add_format()
@@ -71,6 +71,7 @@ event=re.sub(r' Event','',event)
 #print("Event: " + event)
 
 # Specify the order that the columns should be in in the speadsheet
+# TODO: put this in a config file
 columnOrder={
     # Column Name:           Col Num
     "Team Number":                   0,
@@ -123,7 +124,6 @@ try:
     csv_reader = csv.DictReader(csv_file)
 
     teams = {}
-    r = 1
 
     # for each team, create a sheet and populate
     cellfmt = workbook.add_format()
@@ -145,24 +145,34 @@ try:
             prevteam=teamNum
             # now create new sheet and initialize
             teams[row["Team Number"]] = workbook.add_worksheet(row["Team Number"])
-            r = 1
+            r=0
+            teams[row["Team Number"]].write(r, 0, teamNum, cellfmt)
+            r+=1
 
         col=1
-        teams[row["Team Number"]].write(0, 0, "Event", cellfmt)
+        headerRow=r
+        teams[row["Team Number"]].write(headerRow, 0, "Event", cellfmt)
+        r+=1
+        #teams[row["Team Number"]].write(r, 0, "Event", cellfmt)
+        #r+=1
+        # Loop through each column in the next row
         for c, (k, v) in enumerate(sorted(row.items(), key=getOrder)):
             # if the key starts with a space, ignore it, it is a header
             if re.match('^ ',k): 
                 continue
+            # skip the team number column, we are on the team's sheet
             if re.match('Team Number',k): 
                 continue
+            # remove the quotes (should this be part of the csv reader?)
             if type(k) is str: k = re.sub('["]', '', k)
             if type(v) is str: v = re.sub('["]', '', v)
             # Add header in top row
-            teams[row["Team Number"]].write(0, col, k, cellfmt)
-            # Add values to rows
+            teams[row["Team Number"]].write(headerRow, col, k, cellfmt)
+            # Add in the event name in the first column
             teams[row["Team Number"]].write(r, 0, event, cellfmt)
+            # Add values to rows
             teams[row["Team Number"]].write(r, col, v, cellfmt)
-            col=col+1
+            col+=1
         r+=1
 
 except Exception as ee:
