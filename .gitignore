@@ -2,3 +2,4 @@
 .~lock.*
 .gitignore
 *.xlsx
+.vscode/settings.json
