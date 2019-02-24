@@ -162,12 +162,12 @@ try:
             prevteam=teamNum
 
             # now create new sheet and initialize
-            teams[row["Team Number"]] = workbook.add_worksheet(row["Team Number"])
+            teams[teamNum] = workbook.add_worksheet(teamNum)
             r=0
-            teams[row["Team Number"]].write(r, 0, teamNum, cellfmt)
-            r+=1
+            teams[teamNum].write(r, 0, teamNum, cellfmt)
+            r+=2
             headerRow=r
-            teams[row["Team Number"]].write(headerRow, 0, "Event", cellfmt)
+            teams[teamNum].write(headerRow, 0, "Event", cellfmt)
 
         col=1
         r+=1
@@ -184,11 +184,11 @@ try:
             if type(k) is str: k = re.sub('["]', '', k)
             if type(v) is str: v = re.sub('["]', '', v)
             # Add header in top row
-            teams[row["Team Number"]].write(headerRow, col, k, cellfmt)
+            teams[teamNum].write(headerRow, col, k, cellfmt)
             # Add in the event name in the first column
-            teams[row["Team Number"]].write(r, 0, event, cellfmt)
+            teams[teamNum].write(r, 0, event, cellfmt)
             # Add values to rows
-            teams[row["Team Number"]].write(r, col, v, cellfmt)
+            teams[teamNum].write(r, col, v, cellfmt)
             col+=1
 
 except Exception as ee:
