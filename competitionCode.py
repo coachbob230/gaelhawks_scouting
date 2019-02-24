@@ -140,9 +140,9 @@ try:
 
     # Title cell format
     titlefmt = workbook.add_format()
-    headerfmt.set_text_wrap()
-    headerfmt.set_bg_color('gray')
-    headerfmt.set_font_size(30)
+    titlefmt.set_text_wrap()
+    titlefmt.set_bg_color('gray')
+    titlefmt.set_font_size(30)
 
     # for each team, create a sheet and populate
     for row in csv_reader:
@@ -164,10 +164,10 @@ try:
             # now create new sheet and initialize
             teams[teamNum] = workbook.add_worksheet(teamNum)
             r=0
-            teams[teamNum].write(r, 0, teamNum, cellfmt)
+            teams[teamNum].write(r, 0, teamNum, titlefmt)
             r+=2
             headerRow=r
-            teams[teamNum].write(headerRow, 0, "Event", cellfmt)
+            teams[teamNum].write(headerRow, 0, "Event", headerfmt)
 
         col=1
         r+=1
@@ -184,7 +184,7 @@ try:
             if type(k) is str: k = re.sub('["]', '', k)
             if type(v) is str: v = re.sub('["]', '', v)
             # Add header in top row
-            teams[teamNum].write(headerRow, col, k, cellfmt)
+            teams[teamNum].write(headerRow, col, k, headerfmt)
             # Add in the event name in the first column
             teams[teamNum].write(r, 0, event, cellfmt)
             # Add values to rows
