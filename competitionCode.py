@@ -132,8 +132,10 @@ try:
     #cellfmt.   ## cell height and width
     for row in csv_reader:
         teamNum = (row["Team Number"])
+
         # when we find a new team number create a new sheet
         if (teamNum not in teams.keys()):
+            
             # first finish up the previous sheet
             # ** Note python's crappy way to test if a variable is defined
             try:      # test if variable is defined
@@ -143,18 +145,18 @@ try:
             else:     # it is defined, do this stuff
                 calculate(teams[prevteam],r)
             prevteam=teamNum
+
             # now create new sheet and initialize
             teams[row["Team Number"]] = workbook.add_worksheet(row["Team Number"])
             r=0
             teams[row["Team Number"]].write(r, 0, teamNum, cellfmt)
             r+=1
+            headerRow=r
+            teams[row["Team Number"]].write(headerRow, 0, "Event", cellfmt)
 
         col=1
-        headerRow=r
-        teams[row["Team Number"]].write(headerRow, 0, "Event", cellfmt)
         r+=1
-        #teams[row["Team Number"]].write(r, 0, "Event", cellfmt)
-        #r+=1
+
         # Loop through each column in the next row
         for c, (k, v) in enumerate(sorted(row.items(), key=getOrder)):
             # if the key starts with a space, ignore it, it is a header
@@ -173,7 +175,6 @@ try:
             # Add values to rows
             teams[row["Team Number"]].write(r, col, v, cellfmt)
             col+=1
-        r+=1
 
 except Exception as ee:
     print(ee)
