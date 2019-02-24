@@ -11,7 +11,7 @@ import re
 def calculate(sheet,lastrow):
     """ Add all the calculated values to the sheet """
 
-    r=lastrow+1
+    r=lastrow+2
     avgFormat = workbook.add_format()
     avgFormat.set_bold()
     sheet.write(r, 0, "AVERAGE", avgFormat)
@@ -125,17 +125,32 @@ try:
 
     teams = {}
 
-    # for each team, create a sheet and populate
+    # data cell format
     cellfmt = workbook.add_format()
     cellfmt.set_text_wrap()
     cellfmt.set_align('center')
     #cellfmt.   ## cell height and width
+
+    # header cell format
+    headerfmt = workbook.add_format()
+    headerfmt.set_text_wrap()
+    headerfmt.set_align('center')
+    headerfmt.set_bold()
+    headerfmt.set_bg_color('gray')
+
+    # Title cell format
+    titlefmt = workbook.add_format()
+    headerfmt.set_text_wrap()
+    headerfmt.set_bg_color('gray')
+    headerfmt.set_font_size(30)
+
+    # for each team, create a sheet and populate
     for row in csv_reader:
         teamNum = (row["Team Number"])
 
         # when we find a new team number create a new sheet
         if (teamNum not in teams.keys()):
-            
+
             # first finish up the previous sheet
             # ** Note python's crappy way to test if a variable is defined
             try:      # test if variable is defined
